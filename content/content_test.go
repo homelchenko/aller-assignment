@@ -73,7 +73,7 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 		{
 			articles:    makeArticleFeed(5),
 			marketing:   makeMarketingFeed(1),
-			expectedLen: 6
+			expectedLen: 6,
 		},
 	}
 
