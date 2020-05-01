@@ -6,12 +6,14 @@ import (
 	"github.com/homelchenko/aller-assignment/content"
 )
 
+type fixture struct {
+	articles    []content.Article
+	marketing   []content.Marketing
+	expectedLen int
+}
+
 func TestProduceNewsFeedForEmptySlices(t *testing.T) {
-	fixtures := []struct {
-		articles    []content.Article
-		marketing   []content.Marketing
-		expectedLen int
-	}{
+	fixtures := []fixture{
 		{articles: nil, marketing: nil, expectedLen: 0},
 		{articles: []content.Article{}, marketing: nil, expectedLen: 0},
 		{articles: nil, marketing: []content.Marketing{}, expectedLen: 0},
@@ -27,16 +29,16 @@ func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 }
 
 func TestProduceNewsFeedWhenArticlesFewerThanFive(t *testing.T) {
-	articles := []content.Article{
-		{},
-		{},
-		{},
-		{},
+	fixtures := []fixture{
+		{articles: []content.Article{{}, {}, {}, {}}, marketing: nil, expectedLen: 4},
+		{articles: []content.Article{{}, {}, {}, {}}, marketing: []content.Marketing{{}}, expectedLen: 4},
 	}
 
-	feed := content.ProduceNewsFeed(articles, nil)
+	for _, fixture := range fixtures {
+		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-	if len(feed.Items) != 4 {
-		t.Errorf("Got %d, but expected %d", len(feed.Items), 4)
+		if len(feed.Items) != fixture.expectedLen {
+			t.Errorf("Got %d, but expected %d", len(feed.Items), fixture.expectedLen)
+		}
 	}
 }
