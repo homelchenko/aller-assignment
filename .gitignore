@@ -6,6 +6,9 @@
 *.so
 *.dylib
 
+# Built binaries
+aller-assignment
+
 # Test binary, built with `go test -c`
 *.test
 
