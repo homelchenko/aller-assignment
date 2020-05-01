@@ -25,3 +25,18 @@ func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 		}
 	}
 }
+
+func TestProduceNewsFeedWhenArticlesFewerThanFive(t *testing.T) {
+	articles := []content.Article{
+		{},
+		{},
+		{},
+		{},
+	}
+
+	feed := content.ProduceNewsFeed(articles, nil)
+
+	if len(feed.Items) != 4 {
+		t.Errorf("Got %d, but expected %d", len(feed.Items), 4)
+	}
+}

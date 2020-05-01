@@ -32,5 +32,6 @@ type NewsFeed struct {
 }
 
 func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
-	return NewsFeed{}
+	pieces := make([]NewsPiece, len(a))
+	return NewsFeed{Items: pieces}
 }
