@@ -35,7 +35,7 @@ func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
 	pieces := []NewsPiece{}
 	for i, p := range a {
 		pieces = append(pieces, p)
-		if i == 4 {
+		if (i+1)%5 == 0 {
 			pieces = append(pieces, m[0])
 		}
 	}

@@ -75,6 +75,11 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 			marketing:   makeMarketingFeed(1),
 			expectedLen: 6,
 		},
+		{
+			articles:    makeArticleFeed(10),
+			marketing:   makeMarketingFeed(2),
+			expectedLen: 12,
+		},
 	}
 
 	for _, fixture := range fixtures {
