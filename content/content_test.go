@@ -91,6 +91,24 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 	}
 }
 
+func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T) {
+	fixtures := []fixture{
+		{
+			articles:    makeArticleFeed(5),
+			marketing:   makeMarketingFeed(0),
+			expectedLen: 6,
+		},
+	}
+
+	for _, fixture := range fixtures {
+		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
+
+		if len(feed.Items) != fixture.expectedLen {
+			t.Errorf("Got %d, but expected %d", len(feed.Items), fixture.expectedLen)
+		}
+	}
+}
+
 func makeArticleFeed(n int) []content.Article {
 	feed := make([]content.Article, n)
 	for i := range feed {
