@@ -26,12 +26,12 @@ func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 		},
 		{
 			articles:    nil,
-			marketing:   []content.Marketing{},
+			marketing:   makeMarketingFeed(0),
 			expectedLen: 0,
 		},
 		{
 			articles:    makeArticleFeed(0),
-			marketing:   []content.Marketing{},
+			marketing:   makeMarketingFeed(0),
 			expectedLen: 0,
 		},
 	}
