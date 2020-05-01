@@ -15,9 +15,9 @@ type fixture struct {
 func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 	fixtures := []fixture{
 		{articles: nil, marketing: nil, expectedLen: 0},
-		{articles: []content.Article{}, marketing: nil, expectedLen: 0},
+		{articles: makeArticleFeed(0), marketing: nil, expectedLen: 0},
 		{articles: nil, marketing: []content.Marketing{}, expectedLen: 0},
-		{articles: []content.Article{}, marketing: []content.Marketing{}, expectedLen: 0},
+		{articles: makeArticleFeed(0), marketing: []content.Marketing{}, expectedLen: 0},
 	}
 	for _, fixture := range fixtures {
 		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
@@ -30,8 +30,8 @@ func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 
 func TestProduceNewsFeedWhenArticlesFewerThanFive(t *testing.T) {
 	fixtures := []fixture{
-		{articles: []content.Article{{}, {}, {}, {}}, marketing: nil, expectedLen: 4},
-		{articles: []content.Article{{}, {}, {}, {}}, marketing: []content.Marketing{{}}, expectedLen: 4},
+		{articles: makeArticleFeed(4), marketing: nil, expectedLen: 4},
+		{articles: makeArticleFeed(4), marketing: []content.Marketing{{}}, expectedLen: 4},
 	}
 
 	for _, fixture := range fixtures {
@@ -45,7 +45,7 @@ func TestProduceNewsFeedWhenArticlesFewerThanFive(t *testing.T) {
 
 func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 	fixtures := []fixture{
-		{articles: []content.Article{{}, {}, {}, {}, {}}, marketing: []content.Marketing{{}}, expectedLen: 6},
+		{articles: makeArticleFeed(5), marketing: []content.Marketing{{}}, expectedLen: 6},
 	}
 
 	for _, fixture := range fixtures {
@@ -55,4 +55,13 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 			t.Errorf("Got %d, but expected %d", len(feed.Items), fixture.expectedLen)
 		}
 	}
+}
+
+func makeArticleFeed(n int) []content.Article {
+	feed := make([]content.Article, n)
+	for i := range feed {
+		feed[i] = content.Article{}
+	}
+
+	return feed
 }
