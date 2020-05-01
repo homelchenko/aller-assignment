@@ -1,7 +1,5 @@
 package content
 
-// TODO: What to do with duplication?
-
 type Article struct {
 	Type          string  `json:"string"`
 	Harvester     string  `json:"harvesterId"`
@@ -24,4 +22,15 @@ type Marketing struct {
 
 type Ad struct {
 	Type string `json:"type"`
+}
+
+type NewsPiece interface {
+}
+
+type NewsFeed struct {
+	Items []NewsPiece
+}
+
+func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
+	return NewsFeed{}
 }
