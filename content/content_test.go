@@ -14,11 +14,28 @@ type fixture struct {
 
 func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 	fixtures := []fixture{
-		{articles: nil, marketing: nil, expectedLen: 0},
-		{articles: makeArticleFeed(0), marketing: nil, expectedLen: 0},
-		{articles: nil, marketing: []content.Marketing{}, expectedLen: 0},
-		{articles: makeArticleFeed(0), marketing: []content.Marketing{}, expectedLen: 0},
+		{
+			articles:    nil,
+			marketing:   nil,
+			expectedLen: 0,
+		},
+		{
+			articles:    makeArticleFeed(0),
+			marketing:   nil,
+			expectedLen: 0,
+		},
+		{
+			articles:    nil,
+			marketing:   []content.Marketing{},
+			expectedLen: 0,
+		},
+		{
+			articles:    makeArticleFeed(0),
+			marketing:   []content.Marketing{},
+			expectedLen: 0,
+		},
 	}
+
 	for _, fixture := range fixtures {
 		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
@@ -30,8 +47,16 @@ func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 
 func TestProduceNewsFeedWhenArticlesFewerThanFive(t *testing.T) {
 	fixtures := []fixture{
-		{articles: makeArticleFeed(4), marketing: nil, expectedLen: 4},
-		{articles: makeArticleFeed(4), marketing: []content.Marketing{{}}, expectedLen: 4},
+		{
+			articles:    makeArticleFeed(4),
+			marketing:   nil,
+			expectedLen: 4,
+		},
+		{
+			articles:    makeArticleFeed(4),
+			marketing:   makeMarketingFeed(1),
+			expectedLen: 4,
+		},
 	}
 
 	for _, fixture := range fixtures {
@@ -45,7 +70,10 @@ func TestProduceNewsFeedWhenArticlesFewerThanFive(t *testing.T) {
 
 func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 	fixtures := []fixture{
-		{articles: makeArticleFeed(5), marketing: []content.Marketing{{}}, expectedLen: 6},
+		{
+			articles:    makeArticleFeed(5),
+			marketing:   makeMarketingFeed(1),
+			expectedLen: 6},
 	}
 
 	for _, fixture := range fixtures {
@@ -61,6 +89,16 @@ func makeArticleFeed(n int) []content.Article {
 	feed := make([]content.Article, n)
 	for i := range feed {
 		feed[i] = content.Article{}
+	}
+
+	return feed
+}
+
+func makeMarketingFeed(n int) []content.Marketing {
+	feed := make([]content.Marketing, n)
+
+	for i := range feed {
+		feed[i] = content.Marketing{}
 	}
 
 	return feed
