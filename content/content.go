@@ -32,6 +32,13 @@ type NewsFeed struct {
 }
 
 func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
-	pieces := make([]NewsPiece, len(a))
+	pieces := []NewsPiece{}
+	for i, p := range a {
+		pieces = append(pieces, p)
+		if (i+1)%5 == 0 {
+			pieces = append(pieces, m[0])
+		}
+	}
+
 	return NewsFeed{Items: pieces}
 }

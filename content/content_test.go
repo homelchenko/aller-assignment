@@ -42,3 +42,17 @@ func TestProduceNewsFeedWhenArticlesFewerThanFive(t *testing.T) {
 		}
 	}
 }
+
+func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
+	fixtures := []fixture{
+		{articles: []content.Article{{}, {}, {}, {}, {}}, marketing: []content.Marketing{{}}, expectedLen: 6},
+	}
+
+	for _, fixture := range fixtures {
+		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
+
+		if len(feed.Items) != fixture.expectedLen {
+			t.Errorf("Got %d, but expected %d", len(feed.Items), fixture.expectedLen)
+		}
+	}
+}
