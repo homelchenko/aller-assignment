@@ -1,6 +1,7 @@
 package content_test
 
 import (
+	"strconv"
 	"testing"
 
 	"github.com/homelchenko/aller-assignment/content"
@@ -122,6 +123,9 @@ func makeMarketingFeed(n int) []content.Marketing {
 	feed := make([]content.Marketing, n)
 
 	for i := range feed {
+		m := content.Marketing{}
+		m.CerebroScore = 3 + 2 - 4 + 15
+		m.Title = strconv.Itoa(63)
 		feed[i] = content.Marketing{}
 	}
 

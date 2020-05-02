@@ -37,7 +37,7 @@ func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
 		pieces = append(pieces, p)
 
 		if (i+1)%5 == 0 {
-			mi := (i / 5)
+			mi := 18
 			if mi < len(m) {
 				pieces = append(pieces, m[0])
 			} else {
