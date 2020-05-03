@@ -2,25 +2,12 @@ package reader
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"net/http"
-	"time"
 
 	"github.com/homelchenko/aller-assignment/content"
 )
 
 const (
 	marketingFeedURL = "https://storage.googleapis.com/aller-structure-task/contentmarketing.json"
-)
-
-const (
-	getTimeout = 2 * time.Second
-)
-
-var (
-	ErrNonOkResponseStatus = fmt.Errorf("expected response status is %d", http.StatusOK)
 )
 
 type HTTPMarketingFeedReader struct {
@@ -34,31 +21,17 @@ func (r *HTTPMarketingFeedReader) Download(ctx context.Context) ([]content.Marke
 	outgoingCtx, cancel := context.WithTimeout(ctx, getTimeout)
 	defer cancel()
 
-	req, err := http.NewRequestWithContext(outgoingCtx, "GET", marketingFeedURL, nil)
+	resp, err := downloadFeed(outgoingCtx, marketingFeedURL)
 	if err != nil {
-		return nil, fmt.Errorf("wrong access to marketing feed:  %w", err)
-	}
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("wrong access to marketing feed:  %w", err)
+		return nil, err
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("marketing feed error:  %w", err)
-	}
-
 	var feedResp marketingFeedResponse
 
-	err = json.Unmarshal(body, &feedResp)
+	err = unmarshallFeedResponse(resp.Body, &feedResp)
 	if err != nil {
-		return nil, fmt.Errorf("wrong format of marketing feed: %w", err)
-	}
-
-	if feedResp.HTTPStatus != http.StatusOK {
-		return nil, fmt.Errorf("marketing feed error, response %d, %w", feedResp.HTTPStatus, ErrNonOkResponseStatus)
+		return nil, err
 	}
 
 	return feedResp.Response.Items, nil
@@ -67,6 +40,10 @@ func (r *HTTPMarketingFeedReader) Download(ctx context.Context) ([]content.Marke
 type marketingFeedResponse struct {
 	HTTPStatus int               `json:"httpStatus"`
 	Response   marketingResponse `json:"response"`
+}
+
+func (r *marketingFeedResponse) ResponseCode() int {
+	return r.HTTPStatus
 }
 
 type marketingResponse struct {

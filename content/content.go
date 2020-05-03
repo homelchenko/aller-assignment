@@ -77,3 +77,7 @@ func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
 type MarketingFeedDownloader interface {
 	Download(ctx context.Context) ([]Marketing, error)
 }
+
+type ArticleFeedDownloader interface {
+	Download(ctx context.Context) ([]Article, error)
+}

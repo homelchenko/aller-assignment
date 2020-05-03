@@ -10,6 +10,7 @@ import (
 
 const (
 	externalMarketingFeedLen = 4
+	externalArticleFeedLen   = 136
 )
 
 func TestDownloadMarketingFeed(t *testing.T) {
@@ -24,5 +25,20 @@ func TestDownloadMarketingFeed(t *testing.T) {
 
 	if len(feed) != externalMarketingFeedLen {
 		t.Errorf("Got %d marketing from feed, but expected %d", len(feed), externalMarketingFeedLen)
+	}
+}
+
+func TestDownloadArticleFeed(t *testing.T) {
+	feedReader := reader.NewArticleFeedReader(context.Background())
+
+	feed, err := feedReader.Download(context.Background())
+
+	if err != nil {
+		t.Errorf("Expected no error, got %s", err)
+		return
+	}
+
+	if len(feed) != externalArticleFeedLen {
+		t.Errorf("Got %d articles from feed, but expected %d", len(feed), externalArticleFeedLen)
 	}
 }
