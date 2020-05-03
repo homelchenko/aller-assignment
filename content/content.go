@@ -19,10 +19,6 @@ func NewArticle() Article {
 	}
 }
 
-func (a *Article) PieceType() string {
-	return a.Type
-}
-
 type Marketing struct {
 	Type          string  `json:"type"`
 	Harvester     string  `json:"harvesterId"`
@@ -40,10 +36,6 @@ func NewMarketing() Marketing {
 	}
 }
 
-func (m *Marketing) PieceType() string {
-	return m.Type
-}
-
 type Ad struct {
 	Type string `json:"type"`
 }
@@ -52,12 +44,7 @@ func NewAd() Ad {
 	return Ad{Type: "Ads"}
 }
 
-func (a *Ad) PieceType() string {
-	return a.Type
-}
-
 type NewsPiece interface {
-	PieceType() string
 }
 
 type NewsFeed struct {
