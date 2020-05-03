@@ -32,6 +32,10 @@ type Ad struct {
 	Type string `json:"type"`
 }
 
+func NewAd() Ad {
+	return Ad{Type: "Ads"}
+}
+
 func (a *Ad) PieceType() string {
 	return a.Type
 }
@@ -56,7 +60,8 @@ func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
 			if mi < len(m) {
 				pieces = append(pieces, &m[0])
 			} else {
-				pieces = append(pieces, &Ad{Type: "Ads"})
+				ad := NewAd()
+				pieces = append(pieces, &ad)
 			}
 		}
 	}
