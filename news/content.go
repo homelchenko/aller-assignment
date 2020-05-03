@@ -47,9 +47,9 @@ func NewAd() Ad {
 type Piece interface {
 }
 
-type NewsFeed []Piece
+type Feed []Piece
 
-func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
+func ProduceNewsFeed(a []Article, m []Marketing) Feed {
 	pieces := []Piece{}
 
 	for i, p := range a {
