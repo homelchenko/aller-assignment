@@ -1,5 +1,7 @@
 package content
 
+import "context"
+
 const (
 	articleLen = 5
 )
@@ -70,4 +72,8 @@ func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
 	}
 
 	return NewsFeed{Items: pieces}
+}
+
+type MarketingFeedDownloader interface {
+	Download(ctx context.Context) ([]Marketing, error)
 }
