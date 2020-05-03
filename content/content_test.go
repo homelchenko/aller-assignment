@@ -11,7 +11,6 @@ import (
 type fixture struct {
 	articles     []content.Article
 	marketing    []content.Marketing
-	expectedFeed []string
 	expectedNews []content.NewsPiece
 }
 
