@@ -42,8 +42,8 @@ func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 	for _, fixture := range fixtures {
 		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed.Items) != len(fixture.expectedFeed) {
-			t.Errorf("Got %d, but expected %d", len(feed.Items), len(fixture.expectedFeed))
+		if len(feed.Items) != len(fixture.expectedNews) {
+			t.Errorf("Got %d, but expected %d", len(feed.Items), len(fixture.expectedNews))
 		}
 	}
 }
