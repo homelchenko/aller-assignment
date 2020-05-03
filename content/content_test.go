@@ -49,22 +49,29 @@ func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 func TestProduceNewsFeedWhenArticlesFewerThanFive(t *testing.T) {
 	fixtures := []fixture{
 		{
-			articles:    makeArticleFeed(4),
-			marketing:   nil,
-			expectedLen: 4,
+			articles:     makeArticleFeed(4),
+			marketing:    nil,
+			expectedFeed: []string{"Article", "Article", "Article", "Article"},
 		},
 		{
-			articles:    makeArticleFeed(4),
-			marketing:   makeMarketingFeed(1),
-			expectedLen: 4,
+			articles:     makeArticleFeed(4),
+			marketing:    makeMarketingFeed(1),
+			expectedFeed: []string{"Article", "Article", "Article", "Article"},
 		},
 	}
 
 	for _, fixture := range fixtures {
 		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed.Items) != fixture.expectedLen {
-			t.Errorf("Got %d, but expected %d", len(feed.Items), fixture.expectedLen)
+		if len(feed.Items) != len(fixture.expectedFeed) {
+			t.Errorf("Got %d, but expected %d", len(feed.Items), len(fixture.expectedFeed))
+		}
+
+		for i, item := range feed.Items {
+			if item.PieceType() != fixture.expectedFeed[i] {
+				t.Errorf("At %d got %s, but expected %s", i, item.PieceType(), fixture.expectedFeed[i])
+				break
+			}
 		}
 	}
 }
