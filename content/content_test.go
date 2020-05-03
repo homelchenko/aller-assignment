@@ -20,22 +20,22 @@ func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 		{
 			articles:     nil,
 			marketing:    nil,
-			expectedFeed: []string{},
+			expectedNews: []content.NewsPiece{},
 		},
 		{
 			articles:     makeArticleFeed(0),
 			marketing:    nil,
-			expectedFeed: []string{},
+			expectedNews: []content.NewsPiece{},
 		},
 		{
 			articles:     nil,
 			marketing:    makeMarketingFeed(0),
-			expectedFeed: []string{},
+			expectedNews: []content.NewsPiece{},
 		},
 		{
 			articles:     makeArticleFeed(0),
 			marketing:    makeMarketingFeed(0),
-			expectedFeed: []string{},
+			expectedNews: []content.NewsPiece{},
 		},
 	}
 
