@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/homelchenko/aller-assignment/feed"
-	"github.com/homelchenko/aller-assignment/feed/reader"
+	"github.com/homelchenko/aller-assignment/feed/downloader"
 )
 
 const (
@@ -14,7 +14,7 @@ const (
 )
 
 func TestDownloadMarketingFeed(t *testing.T) {
-	var feedReader feed.MarketingFeedDownloader = reader.NewMarketingFeedReader()
+	var feedReader feed.MarketingFeedDownloader = downloader.NewMarketingFeedReader()
 
 	f, err := feedReader.Download(context.Background())
 
@@ -29,7 +29,7 @@ func TestDownloadMarketingFeed(t *testing.T) {
 }
 
 func TestDownloadArticleFeed(t *testing.T) {
-	feedReader := reader.NewArticleFeedReader(context.Background())
+	feedReader := downloader.NewArticleFeedReader(context.Background())
 
 	f, err := feedReader.Download(context.Background())
 
