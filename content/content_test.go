@@ -1,6 +1,8 @@
 package content_test
 
 import (
+	"reflect"
+	"strconv"
 	"testing"
 
 	"github.com/homelchenko/aller-assignment/content"
@@ -10,6 +12,7 @@ type fixture struct {
 	articles     []content.Article
 	marketing    []content.Marketing
 	expectedFeed []string
+	expectedNews []content.NewsPiece
 }
 
 func TestProduceNewsFeedForEmptySlices(t *testing.T) {
@@ -53,29 +56,30 @@ func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 }
 
 func TestProduceNewsFeedWhenArticlesFewerThanFive(t *testing.T) {
+	articles := makeArticleFeed(4)
 	fixtures := []fixture{
 		{
-			articles:     makeArticleFeed(4),
+			articles:     articles,
 			marketing:    nil,
-			expectedFeed: []string{"Article", "Article", "Article", "Article"},
+			expectedNews: []content.NewsPiece{&articles[0], &articles[1], &articles[2], &articles[3]},
 		},
 		{
-			articles:     makeArticleFeed(4),
+			articles:     articles,
 			marketing:    makeMarketingFeed(1),
-			expectedFeed: []string{"Article", "Article", "Article", "Article"},
+			expectedNews: []content.NewsPiece{&articles[0], &articles[1], &articles[2], &articles[3]},
 		},
 	}
 
 	for _, fixture := range fixtures {
 		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed.Items) != len(fixture.expectedFeed) {
-			t.Errorf("Got %d, but expected %d", len(feed.Items), len(fixture.expectedFeed))
+		if len(feed.Items) != len(fixture.expectedNews) {
+			t.Errorf("Got %d, but expected %d", len(feed.Items), len(fixture.expectedNews))
 		}
 
 		for i, item := range feed.Items {
-			if item.PieceType() != fixture.expectedFeed[i] {
-				t.Errorf("At %d got %s, but expected %s", i, item.PieceType(), fixture.expectedFeed[i])
+			if !reflect.DeepEqual(item, fixture.expectedNews[i]) {
+				t.Errorf("At %d got %s, but expected %s", i, item, fixture.expectedNews[i])
 				break
 			}
 		}
@@ -151,7 +155,9 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 func makeArticleFeed(n int) []content.Article {
 	feed := make([]content.Article, n)
 	for i := range feed {
-		feed[i] = content.NewArticle()
+		a := content.NewArticle()
+		a.Title = strconv.Itoa(i)
+		feed[i] = a
 	}
 
 	return feed
