@@ -1,12 +1,16 @@
 package content
 
 type Article struct {
-	Type          string  `json:"string"`
+	Type          string  `json:"type"`
 	Harvester     string  `json:"harvesterId"`
 	CerebroScore  float64 `json:"cerebro-score"`
 	URL           string  `json:"url"`
 	Title         string  `json:"title"`
 	CleanImageURL string  `json:"cleanImage"`
+}
+
+func (a *Article) PieceType() string {
+	return a.Type
 }
 
 type Marketing struct {
@@ -20,11 +24,20 @@ type Marketing struct {
 	CleanImageURL string  `json:"cleanImage"`
 }
 
+func (m *Marketing) PieceType() string {
+	return m.Type
+}
+
 type Ad struct {
 	Type string `json:"type"`
 }
 
+func (a *Ad) PieceType() string {
+	return a.Type
+}
+
 type NewsPiece interface {
+	PieceType() string
 }
 
 type NewsFeed struct {
@@ -34,14 +47,14 @@ type NewsFeed struct {
 func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
 	pieces := []NewsPiece{}
 	for i, p := range a {
-		pieces = append(pieces, p)
+		pieces = append(pieces, &p)
 
 		if (i+1)%5 == 0 {
 			mi := 18
 			if mi < len(m) {
-				pieces = append(pieces, m[0])
+				pieces = append(pieces, &m[0])
 			} else {
-				pieces = append(pieces, Ad{})
+				pieces = append(pieces, &Ad{Type: "Ads"})
 			}
 		}
 	}

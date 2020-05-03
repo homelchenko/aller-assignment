@@ -7,9 +7,10 @@ import (
 )
 
 type fixture struct {
-	articles    []content.Article
-	marketing   []content.Marketing
-	expectedLen int
+	articles     []content.Article
+	marketing    []content.Marketing
+	expectedLen  int
+	expectedFeed []string
 }
 
 func TestProduceNewsFeedForEmptySlices(t *testing.T) {
@@ -94,17 +95,25 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T) {
 	fixtures := []fixture{
 		{
-			articles:    makeArticleFeed(5),
-			marketing:   makeMarketingFeed(0),
-			expectedLen: 6,
+			articles:     makeArticleFeed(5),
+			marketing:    makeMarketingFeed(0),
+			expectedLen:  6,
+			expectedFeed: []string{"Article", "Article", "Article", "Article", "Article", "Ads"},
 		},
 	}
 
 	for _, fixture := range fixtures {
 		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed.Items) != fixture.expectedLen {
-			t.Errorf("Got %d, but expected %d", len(feed.Items), fixture.expectedLen)
+		if len(feed.Items) != len(fixture.expectedFeed) {
+			t.Errorf("Got %d, but expected %d", len(feed.Items), len(fixture.expectedFeed))
+		}
+
+		for i, item := range feed.Items {
+			if item.PieceType() != fixture.expectedFeed[i] {
+				t.Errorf("At %d got %s, but expected %s", i, item.PieceType(), fixture.expectedFeed[i])
+				break
+			}
 		}
 	}
 }
@@ -112,7 +121,7 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 func makeArticleFeed(n int) []content.Article {
 	feed := make([]content.Article, n)
 	for i := range feed {
-		feed[i] = content.Article{}
+		feed[i] = content.Article{Type: "Article"}
 	}
 
 	return feed
@@ -121,7 +130,7 @@ func makeArticleFeed(n int) []content.Article {
 func makeMarketingFeed(n int) []content.Marketing {
 	feed := make([]content.Marketing, n)
 	for i := range feed {
-		feed[i] = content.Marketing{}
+		feed[i] = content.Marketing{Type: "Marketing"}
 	}
 
 	return feed
