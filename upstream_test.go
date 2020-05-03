@@ -14,9 +14,9 @@ const (
 )
 
 func TestDownloadMarketingFeed(t *testing.T) {
-	var feedReader feed.MarketingFeedDownloader = downloader.NewMarketingFeedReader()
+	var d feed.MarketingFeedDownloader = downloader.NewMarketingFeedReader()
 
-	f, err := feedReader.Download(context.Background())
+	f, err := d.Download(context.Background())
 
 	if err != nil {
 		t.Errorf("Expected no error, got %s", err)
@@ -29,9 +29,9 @@ func TestDownloadMarketingFeed(t *testing.T) {
 }
 
 func TestDownloadArticleFeed(t *testing.T) {
-	feedReader := downloader.NewArticleFeedReader(context.Background())
+	d := downloader.NewArticleFeedReader(context.Background())
 
-	f, err := feedReader.Download(context.Background())
+	f, err := d.Download(context.Background())
 
 	if err != nil {
 		t.Errorf("Expected no error, got %s", err)
