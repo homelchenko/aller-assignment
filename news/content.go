@@ -44,13 +44,13 @@ func NewAd() Ad {
 	return Ad{Type: "Ads"}
 }
 
-type NewsPiece interface {
+type Piece interface {
 }
 
-type NewsFeed []NewsPiece
+type NewsFeed []Piece
 
 func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
-	pieces := []NewsPiece{}
+	pieces := []Piece{}
 
 	for i, p := range a {
 		pieces = append(pieces, p)

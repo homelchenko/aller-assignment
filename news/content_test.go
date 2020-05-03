@@ -11,7 +11,7 @@ import (
 type fixture struct {
 	articles     []news.Article
 	marketing    []news.Marketing
-	expectedFeed []news.NewsPiece
+	expectedFeed []news.Piece
 }
 
 func TestProduceNewsFeedForEmptySlices(t *testing.T) {
@@ -19,22 +19,22 @@ func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 		{
 			articles:     nil,
 			marketing:    nil,
-			expectedFeed: []news.NewsPiece{},
+			expectedFeed: []news.Piece{},
 		},
 		{
 			articles:     makeArticleFeed(0),
 			marketing:    nil,
-			expectedFeed: []news.NewsPiece{},
+			expectedFeed: []news.Piece{},
 		},
 		{
 			articles:     nil,
 			marketing:    makeMarketingFeed(0),
-			expectedFeed: []news.NewsPiece{},
+			expectedFeed: []news.Piece{},
 		},
 		{
 			articles:     makeArticleFeed(0),
 			marketing:    makeMarketingFeed(0),
-			expectedFeed: []news.NewsPiece{},
+			expectedFeed: []news.Piece{},
 		},
 	}
 
@@ -53,12 +53,12 @@ func TestProduceNewsFeedWhenArticlesFewerThanFive(t *testing.T) {
 		{
 			articles:     articles,
 			marketing:    nil,
-			expectedFeed: []news.NewsPiece{articles[0], articles[1], articles[2], articles[3]},
+			expectedFeed: []news.Piece{articles[0], articles[1], articles[2], articles[3]},
 		},
 		{
 			articles:     articles,
 			marketing:    makeMarketingFeed(1),
-			expectedFeed: []news.NewsPiece{articles[0], articles[1], articles[2], articles[3]},
+			expectedFeed: []news.Piece{articles[0], articles[1], articles[2], articles[3]},
 		},
 	}
 
@@ -86,7 +86,7 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 	fix := fixture{
 		articles:  articles,
 		marketing: marketing,
-		expectedFeed: []news.NewsPiece{
+		expectedFeed: []news.Piece{
 			articles[0], articles[1], articles[2], articles[3], articles[4], marketing[0],
 		},
 	}
@@ -97,7 +97,7 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 	fix = fixture{
 		articles:  articles,
 		marketing: marketing,
-		expectedFeed: []news.NewsPiece{
+		expectedFeed: []news.Piece{
 			articles[0], articles[1], articles[2], articles[3], articles[4], marketing[0],
 			articles[5], articles[6], articles[7], articles[8], articles[9], marketing[1],
 		},
@@ -128,7 +128,7 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 	fix := fixture{
 		articles:  articles,
 		marketing: makeMarketingFeed(0),
-		expectedFeed: []news.NewsPiece{
+		expectedFeed: []news.Piece{
 			articles[0], articles[1], articles[2], articles[3], articles[4], ads[0],
 		},
 	}
@@ -139,7 +139,7 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 	fix = fixture{
 		articles:  articles,
 		marketing: marketing,
-		expectedFeed: []news.NewsPiece{
+		expectedFeed: []news.Piece{
 			articles[0], articles[1], articles[2], articles[3], articles[4], marketing[0],
 			articles[5], articles[6], articles[7], articles[8], articles[9], ads[0],
 		},
