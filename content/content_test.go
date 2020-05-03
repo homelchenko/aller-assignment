@@ -97,7 +97,6 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 		{
 			articles:     makeArticleFeed(5),
 			marketing:    makeMarketingFeed(0),
-			expectedLen:  6,
 			expectedFeed: []string{"Article", "Article", "Article", "Article", "Article", "Ads"},
 		},
 	}
