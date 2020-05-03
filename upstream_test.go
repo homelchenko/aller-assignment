@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/homelchenko/aller-assignment/feed"
-	"github.com/homelchenko/aller-assignment/feed/downloader"
+	"github.com/homelchenko/aller-assignment/news"
+	"github.com/homelchenko/aller-assignment/news/downloader"
 )
 
 const (
@@ -14,7 +14,7 @@ const (
 )
 
 func TestDownloadMarketingFeed(t *testing.T) {
-	var d feed.MarketingFeedDownloader = downloader.NewMarketingFeedReader()
+	var d news.MarketingFeedDownloader = downloader.NewMarketingFeedReader()
 
 	f, err := d.Download(context.Background())
 
@@ -24,7 +24,7 @@ func TestDownloadMarketingFeed(t *testing.T) {
 	}
 
 	if len(f) != externalMarketingFeedLen {
-		t.Errorf("Got %d marketing from feed, but expected %d", len(f), externalMarketingFeedLen)
+		t.Errorf("Got %d marketing from news, but expected %d", len(f), externalMarketingFeedLen)
 	}
 }
 
@@ -39,6 +39,6 @@ func TestDownloadArticleFeed(t *testing.T) {
 	}
 
 	if len(f) != externalArticleFeedLen {
-		t.Errorf("Got %d articles from feed, but expected %d", len(f), externalArticleFeedLen)
+		t.Errorf("Got %d articles from news, but expected %d", len(f), externalArticleFeedLen)
 	}
 }

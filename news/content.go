@@ -1,4 +1,4 @@
-package feed
+package news
 
 const (
 	articleLen = 5

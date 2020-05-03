@@ -3,7 +3,7 @@ package downloader
 import (
 	"context"
 
-	"github.com/homelchenko/aller-assignment/feed"
+	"github.com/homelchenko/aller-assignment/news"
 )
 
 const (
@@ -17,7 +17,7 @@ func NewArticleFeedReader(ctx context.Context) *HTTPArticleFeedReader {
 	return &HTTPArticleFeedReader{}
 }
 
-func (r *HTTPArticleFeedReader) Download(ctx context.Context) ([]feed.Article, error) {
+func (r *HTTPArticleFeedReader) Download(ctx context.Context) ([]news.Article, error) {
 	outgoingCtx, cancel := context.WithTimeout(ctx, getTimeout)
 	defer cancel()
 
@@ -43,7 +43,7 @@ type articleFeedResponse struct {
 }
 
 type articleResponse struct {
-	Items []feed.Article `json:"items"`
+	Items []news.Article `json:"items"`
 }
 
 func (r *articleFeedResponse) ResponseCode() int {
