@@ -30,6 +30,12 @@ type Marketing struct {
 	CleanImageURL string  `json:"cleanImage"`
 }
 
+func NewMarketing() Marketing {
+	return Marketing{
+		Type: "ContentMarketing",
+	}
+}
+
 func (m *Marketing) PieceType() string {
 	return m.Type
 }

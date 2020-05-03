@@ -129,7 +129,7 @@ func makeArticleFeed(n int) []content.Article {
 func makeMarketingFeed(n int) []content.Marketing {
 	feed := make([]content.Marketing, n)
 	for i := range feed {
-		feed[i] = content.Marketing{Type: "Marketing"}
+		feed[i] = content.NewMarketing()
 	}
 
 	return feed
