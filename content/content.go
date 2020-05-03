@@ -1,5 +1,9 @@
 package content
 
+const (
+	articleLen = 5
+)
+
 type Article struct {
 	Type          string  `json:"type"`
 	Harvester     string  `json:"harvesterId"`
@@ -67,8 +71,8 @@ func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
 		pc := p
 		pieces = append(pieces, &pc)
 
-		if (i+1)%5 == 0 {
-			mi := 18
+		if (i+1)%articleLen == 0 {
+			mi := i / articleLen
 			if mi < len(m) {
 				pieces = append(pieces, &m[0])
 			} else {
