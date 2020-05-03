@@ -111,6 +111,15 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 			marketing:    makeMarketingFeed(0),
 			expectedFeed: []string{"Article", "Article", "Article", "Article", "Article", "Ads"},
 		},
+		{
+			articles:    makeArticleFeed(10),
+			marketing:   makeMarketingFeed(1),
+			expectedLen: 12,
+			expectedFeed: []string{
+				"Article", "Article", "Article", "Article", "Article", "ContentMarketing",
+				"Article", "Article", "Article", "Article", "Article", "Ads",
+			},
+		},
 	}
 
 	for _, fixture := range fixtures {
