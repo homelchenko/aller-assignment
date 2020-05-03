@@ -122,32 +122,41 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 }
 
 func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T) {
-	fixtures := []fixture{
-		{
-			articles:     makeArticleFeed(5),
-			marketing:    makeMarketingFeed(0),
-			expectedFeed: []string{"Article", "Article", "Article", "Article", "Article", "Ads"},
-		},
-		{
-			articles:  makeArticleFeed(10),
-			marketing: makeMarketingFeed(1),
-			expectedFeed: []string{
-				"Article", "Article", "Article", "Article", "Article", "ContentMarketing",
-				"Article", "Article", "Article", "Article", "Article", "Ads",
-			},
+	var fixtures []fixture
+
+	articles := makeArticleFeed(5)
+	ads := makeAdFeed(1)
+	fix := fixture{
+		articles:  articles,
+		marketing: makeMarketingFeed(0),
+		expectedNews: []content.NewsPiece{
+			&articles[0], &articles[1], &articles[2], &articles[3], &articles[4], &ads[0],
 		},
 	}
+	fixtures = append(fixtures, fix)
+
+	articles = makeArticleFeed(10)
+	marketing := makeMarketingFeed(1)
+	fix = fixture{
+		articles:  articles,
+		marketing: marketing,
+		expectedNews: []content.NewsPiece{
+			&articles[0], &articles[1], &articles[2], &articles[3], &articles[4], &marketing[0],
+			&articles[5], &articles[6], &articles[7], &articles[8], &articles[9], &ads[0],
+		},
+	}
+	fixtures = append(fixtures, fix)
 
 	for _, fixture := range fixtures {
 		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed.Items) != len(fixture.expectedFeed) {
-			t.Errorf("Got %d, but expected %d", len(feed.Items), len(fixture.expectedFeed))
+		if len(feed.Items) != len(fixture.expectedNews) {
+			t.Errorf("Got %d, but expected %d", len(feed.Items), len(fixture.expectedNews))
 		}
 
 		for i, item := range feed.Items {
-			if item.PieceType() != fixture.expectedFeed[i] {
-				t.Errorf("At %d got %s, but expected %s", i, item.PieceType(), fixture.expectedFeed[i])
+			if !reflect.DeepEqual(item, fixture.expectedNews[i]) {
+				t.Errorf("At %d got %s, but expected %s", i, item, fixture.expectedNews[i])
 				break
 			}
 		}
@@ -171,6 +180,15 @@ func makeMarketingFeed(n int) []content.Marketing {
 		m := content.NewMarketing()
 		m.Title = strconv.Itoa(i)
 		feed[i] = m
+	}
+
+	return feed
+}
+
+func makeAdFeed(n int) []content.Ad {
+	feed := make([]content.Ad, n)
+	for i := range feed {
+		feed[i] = content.NewAd()
 	}
 
 	return feed
