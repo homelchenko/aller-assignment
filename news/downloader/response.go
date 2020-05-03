@@ -18,7 +18,7 @@ var (
 	ErrNonOkResponseStatus = fmt.Errorf("expected response status is %d", http.StatusOK)
 )
 
-type HTTPResponse interface {
+type httpResponse interface {
 	ResponseCode() int
 }
 
@@ -36,7 +36,7 @@ func downloadFeed(ctx context.Context, news string) (*http.Response, error) {
 	return resp, nil
 }
 
-func unmarshallFeedResponse(body io.Reader, resp HTTPResponse) error {
+func unmarshallFeedResponse(body io.Reader, resp httpResponse) error {
 	buf, err := ioutil.ReadAll(body)
 	if err != nil {
 		return fmt.Errorf("news response error:  %w", err)
