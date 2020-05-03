@@ -9,7 +9,6 @@ import (
 type fixture struct {
 	articles     []content.Article
 	marketing    []content.Marketing
-	expectedLen  int
 	expectedFeed []string
 }
 
@@ -124,9 +123,8 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 			expectedFeed: []string{"Article", "Article", "Article", "Article", "Article", "Ads"},
 		},
 		{
-			articles:    makeArticleFeed(10),
-			marketing:   makeMarketingFeed(1),
-			expectedLen: 12,
+			articles:  makeArticleFeed(10),
+			marketing: makeMarketingFeed(1),
 			expectedFeed: []string{
 				"Article", "Article", "Article", "Article", "Article", "ContentMarketing",
 				"Article", "Article", "Article", "Article", "Article", "Ads",
