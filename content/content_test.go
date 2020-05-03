@@ -16,32 +16,39 @@ type fixture struct {
 func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 	fixtures := []fixture{
 		{
-			articles:    nil,
-			marketing:   nil,
-			expectedLen: 0,
+			articles:     nil,
+			marketing:    nil,
+			expectedFeed: []string{},
 		},
 		{
-			articles:    makeArticleFeed(0),
-			marketing:   nil,
-			expectedLen: 0,
+			articles:     makeArticleFeed(0),
+			marketing:    nil,
+			expectedFeed: []string{},
 		},
 		{
-			articles:    nil,
-			marketing:   makeMarketingFeed(0),
-			expectedLen: 0,
+			articles:     nil,
+			marketing:    makeMarketingFeed(0),
+			expectedFeed: []string{},
 		},
 		{
-			articles:    makeArticleFeed(0),
-			marketing:   makeMarketingFeed(0),
-			expectedLen: 0,
+			articles:     makeArticleFeed(0),
+			marketing:    makeMarketingFeed(0),
+			expectedFeed: []string{},
 		},
 	}
 
 	for _, fixture := range fixtures {
 		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed.Items) != fixture.expectedLen {
-			t.Errorf("Got %d, but expected %d", len(feed.Items), fixture.expectedLen)
+		if len(feed.Items) != len(fixture.expectedFeed) {
+			t.Errorf("Got %d, but expected %d", len(feed.Items), len(fixture.expectedFeed))
+		}
+
+		for i, item := range feed.Items {
+			if item.PieceType() != fixture.expectedFeed[i] {
+				t.Errorf("At %d got %s, but expected %s", i, item.PieceType(), fixture.expectedFeed[i])
+				break
+			}
 		}
 	}
 }
