@@ -1,17 +1,17 @@
-package content_test
+package feed_test
 
 import (
 	"reflect"
 	"strconv"
 	"testing"
 
-	"github.com/homelchenko/aller-assignment/content"
+	"github.com/homelchenko/aller-assignment/feed"
 )
 
 type fixture struct {
-	articles     []content.Article
-	marketing    []content.Marketing
-	expectedFeed []content.NewsPiece
+	articles     []feed.Article
+	marketing    []feed.Marketing
+	expectedFeed []feed.NewsPiece
 }
 
 func TestProduceNewsFeedForEmptySlices(t *testing.T) {
@@ -19,30 +19,30 @@ func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 		{
 			articles:     nil,
 			marketing:    nil,
-			expectedFeed: []content.NewsPiece{},
+			expectedFeed: []feed.NewsPiece{},
 		},
 		{
 			articles:     makeArticleFeed(0),
 			marketing:    nil,
-			expectedFeed: []content.NewsPiece{},
+			expectedFeed: []feed.NewsPiece{},
 		},
 		{
 			articles:     nil,
 			marketing:    makeMarketingFeed(0),
-			expectedFeed: []content.NewsPiece{},
+			expectedFeed: []feed.NewsPiece{},
 		},
 		{
 			articles:     makeArticleFeed(0),
 			marketing:    makeMarketingFeed(0),
-			expectedFeed: []content.NewsPiece{},
+			expectedFeed: []feed.NewsPiece{},
 		},
 	}
 
 	for _, fixture := range fixtures {
-		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
+		f := feed.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed) != len(fixture.expectedFeed) {
-			t.Errorf("Got %d, but expected %d", len(feed), len(fixture.expectedFeed))
+		if len(f) != len(fixture.expectedFeed) {
+			t.Errorf("Got %d, but expected %d", len(f), len(fixture.expectedFeed))
 		}
 	}
 }
@@ -53,23 +53,23 @@ func TestProduceNewsFeedWhenArticlesFewerThanFive(t *testing.T) {
 		{
 			articles:     articles,
 			marketing:    nil,
-			expectedFeed: []content.NewsPiece{&articles[0], &articles[1], &articles[2], &articles[3]},
+			expectedFeed: []feed.NewsPiece{&articles[0], &articles[1], &articles[2], &articles[3]},
 		},
 		{
 			articles:     articles,
 			marketing:    makeMarketingFeed(1),
-			expectedFeed: []content.NewsPiece{&articles[0], &articles[1], &articles[2], &articles[3]},
+			expectedFeed: []feed.NewsPiece{&articles[0], &articles[1], &articles[2], &articles[3]},
 		},
 	}
 
 	for _, fixture := range fixtures {
-		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
+		f := feed.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed) != len(fixture.expectedFeed) {
-			t.Errorf("Got %d, but expected %d", len(feed), len(fixture.expectedFeed))
+		if len(f) != len(fixture.expectedFeed) {
+			t.Errorf("Got %d, but expected %d", len(f), len(fixture.expectedFeed))
 		}
 
-		for i, item := range feed {
+		for i, item := range f {
 			if !reflect.DeepEqual(item, fixture.expectedFeed[i]) {
 				t.Errorf("At %d got %s, but expected %s", i, item, fixture.expectedFeed[i])
 				break
@@ -86,7 +86,7 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 	fix := fixture{
 		articles:  articles,
 		marketing: marketing,
-		expectedFeed: []content.NewsPiece{
+		expectedFeed: []feed.NewsPiece{
 			&articles[0], &articles[1], &articles[2], &articles[3], &articles[4], &marketing[0],
 		},
 	}
@@ -97,7 +97,7 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 	fix = fixture{
 		articles:  articles,
 		marketing: marketing,
-		expectedFeed: []content.NewsPiece{
+		expectedFeed: []feed.NewsPiece{
 			&articles[0], &articles[1], &articles[2], &articles[3], &articles[4], &marketing[0],
 			&articles[5], &articles[6], &articles[7], &articles[8], &articles[9], &marketing[1],
 		},
@@ -105,13 +105,13 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 	fixtures = append(fixtures, fix)
 
 	for _, fixture := range fixtures {
-		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
+		f := feed.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed) != len(fixture.expectedFeed) {
-			t.Errorf("Got %d, but expected %d", len(feed), len(fixture.expectedFeed))
+		if len(f) != len(fixture.expectedFeed) {
+			t.Errorf("Got %d, but expected %d", len(f), len(fixture.expectedFeed))
 		}
 
-		for i, item := range feed {
+		for i, item := range f {
 			if !reflect.DeepEqual(item, fixture.expectedFeed[i]) {
 				t.Errorf("At %d got %s, but expected %s", i, item, fixture.expectedFeed[i])
 				break
@@ -128,7 +128,7 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 	fix := fixture{
 		articles:  articles,
 		marketing: makeMarketingFeed(0),
-		expectedFeed: []content.NewsPiece{
+		expectedFeed: []feed.NewsPiece{
 			&articles[0], &articles[1], &articles[2], &articles[3], &articles[4], &ads[0],
 		},
 	}
@@ -139,7 +139,7 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 	fix = fixture{
 		articles:  articles,
 		marketing: marketing,
-		expectedFeed: []content.NewsPiece{
+		expectedFeed: []feed.NewsPiece{
 			&articles[0], &articles[1], &articles[2], &articles[3], &articles[4], &marketing[0],
 			&articles[5], &articles[6], &articles[7], &articles[8], &articles[9], &ads[0],
 		},
@@ -147,13 +147,13 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 	fixtures = append(fixtures, fix)
 
 	for _, fixture := range fixtures {
-		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
+		f := feed.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed) != len(fixture.expectedFeed) {
-			t.Errorf("Got %d, but expected %d", len(feed), len(fixture.expectedFeed))
+		if len(f) != len(fixture.expectedFeed) {
+			t.Errorf("Got %d, but expected %d", len(f), len(fixture.expectedFeed))
 		}
 
-		for i, item := range feed {
+		for i, item := range f {
 			if !reflect.DeepEqual(item, fixture.expectedFeed[i]) {
 				t.Errorf("At %d got %s, but expected %s", i, item, fixture.expectedFeed[i])
 				break
@@ -162,33 +162,33 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 	}
 }
 
-func makeArticleFeed(n int) []content.Article {
-	feed := make([]content.Article, n)
-	for i := range feed {
-		a := content.NewArticle()
+func makeArticleFeed(n int) []feed.Article {
+	f := make([]feed.Article, n)
+	for i := range f {
+		a := feed.NewArticle()
 		a.Title = strconv.Itoa(i)
-		feed[i] = a
+		f[i] = a
 	}
 
-	return feed
+	return f
 }
 
-func makeMarketingFeed(n int) []content.Marketing {
-	feed := make([]content.Marketing, n)
-	for i := range feed {
-		m := content.NewMarketing()
+func makeMarketingFeed(n int) []feed.Marketing {
+	f := make([]feed.Marketing, n)
+	for i := range f {
+		m := feed.NewMarketing()
 		m.Title = strconv.Itoa(i)
-		feed[i] = m
+		f[i] = m
 	}
 
-	return feed
+	return f
 }
 
-func makeAdFeed(n int) []content.Ad {
-	feed := make([]content.Ad, n)
-	for i := range feed {
-		feed[i] = content.NewAd()
+func makeAdFeed(n int) []feed.Ad {
+	f := make([]feed.Ad, n)
+	for i := range f {
+		f[i] = feed.NewAd()
 	}
 
-	return feed
+	return f
 }

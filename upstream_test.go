@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/homelchenko/aller-assignment/content"
-	"github.com/homelchenko/aller-assignment/content/reader"
+	"github.com/homelchenko/aller-assignment/feed"
+	"github.com/homelchenko/aller-assignment/feed/reader"
 )
 
 const (
@@ -14,31 +14,31 @@ const (
 )
 
 func TestDownloadMarketingFeed(t *testing.T) {
-	var feedReader content.MarketingFeedDownloader = reader.NewMarketingFeedReader()
+	var feedReader feed.MarketingFeedDownloader = reader.NewMarketingFeedReader()
 
-	feed, err := feedReader.Download(context.Background())
+	f, err := feedReader.Download(context.Background())
 
 	if err != nil {
 		t.Errorf("Expected no error, got %s", err)
 		return
 	}
 
-	if len(feed) != externalMarketingFeedLen {
-		t.Errorf("Got %d marketing from feed, but expected %d", len(feed), externalMarketingFeedLen)
+	if len(f) != externalMarketingFeedLen {
+		t.Errorf("Got %d marketing from feed, but expected %d", len(f), externalMarketingFeedLen)
 	}
 }
 
 func TestDownloadArticleFeed(t *testing.T) {
 	feedReader := reader.NewArticleFeedReader(context.Background())
 
-	feed, err := feedReader.Download(context.Background())
+	f, err := feedReader.Download(context.Background())
 
 	if err != nil {
 		t.Errorf("Expected no error, got %s", err)
 		return
 	}
 
-	if len(feed) != externalArticleFeedLen {
-		t.Errorf("Got %d articles from feed, but expected %d", len(feed), externalArticleFeedLen)
+	if len(f) != externalArticleFeedLen {
+		t.Errorf("Got %d articles from feed, but expected %d", len(f), externalArticleFeedLen)
 	}
 }
