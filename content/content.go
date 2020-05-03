@@ -1,7 +1,5 @@
 package content
 
-import "context"
-
 const (
 	articleLen = 5
 )
@@ -49,9 +47,7 @@ func NewAd() Ad {
 type NewsPiece interface {
 }
 
-type NewsFeed struct {
-	Items []NewsPiece
-}
+type NewsFeed []NewsPiece
 
 func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
 	pieces := []NewsPiece{}
@@ -71,13 +67,5 @@ func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
 		}
 	}
 
-	return NewsFeed{Items: pieces}
-}
-
-type MarketingFeedDownloader interface {
-	Download(ctx context.Context) ([]Marketing, error)
-}
-
-type ArticleFeedDownloader interface {
-	Download(ctx context.Context) ([]Article, error)
+	return pieces
 }

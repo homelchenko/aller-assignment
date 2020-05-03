@@ -41,8 +41,8 @@ func TestProduceNewsFeedForEmptySlices(t *testing.T) {
 	for _, fixture := range fixtures {
 		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed.Items) != len(fixture.expectedFeed) {
-			t.Errorf("Got %d, but expected %d", len(feed.Items), len(fixture.expectedFeed))
+		if len(feed) != len(fixture.expectedFeed) {
+			t.Errorf("Got %d, but expected %d", len(feed), len(fixture.expectedFeed))
 		}
 	}
 }
@@ -65,11 +65,11 @@ func TestProduceNewsFeedWhenArticlesFewerThanFive(t *testing.T) {
 	for _, fixture := range fixtures {
 		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed.Items) != len(fixture.expectedFeed) {
-			t.Errorf("Got %d, but expected %d", len(feed.Items), len(fixture.expectedFeed))
+		if len(feed) != len(fixture.expectedFeed) {
+			t.Errorf("Got %d, but expected %d", len(feed), len(fixture.expectedFeed))
 		}
 
-		for i, item := range feed.Items {
+		for i, item := range feed {
 			if !reflect.DeepEqual(item, fixture.expectedFeed[i]) {
 				t.Errorf("At %d got %s, but expected %s", i, item, fixture.expectedFeed[i])
 				break
@@ -107,11 +107,11 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 	for _, fixture := range fixtures {
 		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed.Items) != len(fixture.expectedFeed) {
-			t.Errorf("Got %d, but expected %d", len(feed.Items), len(fixture.expectedFeed))
+		if len(feed) != len(fixture.expectedFeed) {
+			t.Errorf("Got %d, but expected %d", len(feed), len(fixture.expectedFeed))
 		}
 
-		for i, item := range feed.Items {
+		for i, item := range feed {
 			if !reflect.DeepEqual(item, fixture.expectedFeed[i]) {
 				t.Errorf("At %d got %s, but expected %s", i, item, fixture.expectedFeed[i])
 				break
@@ -149,11 +149,11 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 	for _, fixture := range fixtures {
 		feed := content.ProduceNewsFeed(fixture.articles, fixture.marketing)
 
-		if len(feed.Items) != len(fixture.expectedFeed) {
-			t.Errorf("Got %d, but expected %d", len(feed.Items), len(fixture.expectedFeed))
+		if len(feed) != len(fixture.expectedFeed) {
+			t.Errorf("Got %d, but expected %d", len(feed), len(fixture.expectedFeed))
 		}
 
-		for i, item := range feed.Items {
+		for i, item := range feed {
 			if !reflect.DeepEqual(item, fixture.expectedFeed[i]) {
 				t.Errorf("At %d got %s, but expected %s", i, item, fixture.expectedFeed[i])
 				break
