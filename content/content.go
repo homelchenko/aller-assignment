@@ -9,6 +9,12 @@ type Article struct {
 	CleanImageURL string  `json:"cleanImage"`
 }
 
+func NewArticle() Article {
+	return Article{
+		Type: "Article",
+	}
+}
+
 func (a *Article) PieceType() string {
 	return a.Type
 }

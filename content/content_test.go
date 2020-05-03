@@ -120,7 +120,7 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 func makeArticleFeed(n int) []content.Article {
 	feed := make([]content.Article, n)
 	for i := range feed {
-		feed[i] = content.Article{Type: "Article"}
+		feed[i] = content.NewArticle()
 	}
 
 	return feed
