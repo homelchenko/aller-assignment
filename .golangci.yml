@@ -1,2 +1,11 @@
 linters:
   enable-all: true
+
+linters-settings:
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+      - experimental
+      - opinionated
