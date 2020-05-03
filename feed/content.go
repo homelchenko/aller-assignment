@@ -53,16 +53,15 @@ func ProduceNewsFeed(a []Article, m []Marketing) NewsFeed {
 	pieces := []NewsPiece{}
 
 	for i, p := range a {
-		pc := p
-		pieces = append(pieces, &pc)
+		pieces = append(pieces, p)
 
 		if (i+1)%articleLen == 0 {
 			mi := i / articleLen
 			if mi < len(m) {
-				pieces = append(pieces, &m[mi])
+				pieces = append(pieces, m[mi])
 			} else {
 				ad := NewAd()
-				pieces = append(pieces, &ad)
+				pieces = append(pieces, ad)
 			}
 		}
 	}

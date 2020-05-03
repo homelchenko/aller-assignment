@@ -53,12 +53,12 @@ func TestProduceNewsFeedWhenArticlesFewerThanFive(t *testing.T) {
 		{
 			articles:     articles,
 			marketing:    nil,
-			expectedFeed: []feed.NewsPiece{&articles[0], &articles[1], &articles[2], &articles[3]},
+			expectedFeed: []feed.NewsPiece{articles[0], articles[1], articles[2], articles[3]},
 		},
 		{
 			articles:     articles,
 			marketing:    makeMarketingFeed(1),
-			expectedFeed: []feed.NewsPiece{&articles[0], &articles[1], &articles[2], &articles[3]},
+			expectedFeed: []feed.NewsPiece{articles[0], articles[1], articles[2], articles[3]},
 		},
 	}
 
@@ -87,7 +87,7 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 		articles:  articles,
 		marketing: marketing,
 		expectedFeed: []feed.NewsPiece{
-			&articles[0], &articles[1], &articles[2], &articles[3], &articles[4], &marketing[0],
+			articles[0], articles[1], articles[2], articles[3], articles[4], marketing[0],
 		},
 	}
 	fixtures = append(fixtures, fix)
@@ -98,8 +98,8 @@ func TestProduceNewsFeedWhenEnoughMarketingForEveryFiveArticles(t *testing.T) {
 		articles:  articles,
 		marketing: marketing,
 		expectedFeed: []feed.NewsPiece{
-			&articles[0], &articles[1], &articles[2], &articles[3], &articles[4], &marketing[0],
-			&articles[5], &articles[6], &articles[7], &articles[8], &articles[9], &marketing[1],
+			articles[0], articles[1], articles[2], articles[3], articles[4], marketing[0],
+			articles[5], articles[6], articles[7], articles[8], articles[9], marketing[1],
 		},
 	}
 	fixtures = append(fixtures, fix)
@@ -129,7 +129,7 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 		articles:  articles,
 		marketing: makeMarketingFeed(0),
 		expectedFeed: []feed.NewsPiece{
-			&articles[0], &articles[1], &articles[2], &articles[3], &articles[4], &ads[0],
+			articles[0], articles[1], articles[2], articles[3], articles[4], ads[0],
 		},
 	}
 	fixtures = append(fixtures, fix)
@@ -140,8 +140,8 @@ func TestProduceNewsFeedWhenNotEnoughMarketingForEveryFiveArticles(t *testing.T)
 		articles:  articles,
 		marketing: marketing,
 		expectedFeed: []feed.NewsPiece{
-			&articles[0], &articles[1], &articles[2], &articles[3], &articles[4], &marketing[0],
-			&articles[5], &articles[6], &articles[7], &articles[8], &articles[9], &ads[0],
+			articles[0], articles[1], articles[2], articles[3], articles[4], marketing[0],
+			articles[5], articles[6], articles[7], articles[8], articles[9], ads[0],
 		},
 	}
 	fixtures = append(fixtures, fix)
