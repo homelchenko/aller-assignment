@@ -21,3 +21,11 @@ func TestNewMarketing(t *testing.T) {
 		t.Errorf("Got %s, but expected 'ContentMarketing'", m.Type)
 	}
 }
+
+func TestNewAd(t *testing.T) {
+	a := news.NewAd()
+
+	if a.Type != "Ads" {
+		t.Errorf("Got %s, but expected 'Ads'", a.Type)
+	}
+}
