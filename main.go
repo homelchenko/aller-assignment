@@ -35,17 +35,7 @@ func getNewsFeed(w http.ResponseWriter, req *http.Request) {
 	ar := <-ca
 	mr := <-cm
 
-	if ar.err != nil {
-		log.Printf("error downloading feed: %s", ar.err)
-		w.WriteHeader(http.StatusInternalServerError)
-
-		return
-	}
-
-	if mr.err != nil {
-		log.Printf("error downloading feed: %s", mr.err)
-		w.WriteHeader(http.StatusInternalServerError)
-
+	if !ar.handle(w) || !mr.handle(w) {
 		return
 	}
 
@@ -66,6 +56,10 @@ type articleResult struct {
 	err      error
 }
 
+func (r *articleResult) handle(w http.ResponseWriter) bool {
+	return checkForError(w, r.err)
+}
+
 func downloadMarketing(ctx context.Context, c chan<- marketingResult) {
 	d := downloader.NewMarketingFeedReader()
 
@@ -76,6 +70,21 @@ func downloadMarketing(ctx context.Context, c chan<- marketingResult) {
 type marketingResult struct {
 	marketing []news.Marketing
 	err       error
+}
+
+func (r *marketingResult) handle(w http.ResponseWriter) bool {
+	return checkForError(w, r.err)
+}
+
+func checkForError(w http.ResponseWriter, err error) bool {
+	if err == nil {
+		return true
+	}
+
+	log.Printf("error downloading feed: %s", err)
+	w.WriteHeader(http.StatusInternalServerError)
+
+	return false
 }
 
 func encodeToJSON(w http.ResponseWriter, feed news.Feed) {
