@@ -10,6 +10,7 @@ import (
 
 func main() {
 	http.HandleFunc("/news", newsFeed)
+
 	log.Fatalln(http.ListenAndServe(":8080", nil))
 }
 
