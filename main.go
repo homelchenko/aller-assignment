@@ -35,7 +35,7 @@ func getNewsFeed(w http.ResponseWriter, req *http.Request) {
 	ar := <-ca
 	mr := <-cm
 
-	if !ar.handle(w) || !mr.handle(w) {
+	if ar.handleError(w) || mr.handleError(w) {
 		return
 	}
 
@@ -56,8 +56,8 @@ type articleResult struct {
 	err      error
 }
 
-func (r *articleResult) handle(w http.ResponseWriter) bool {
-	return checkForError(w, r.err)
+func (r *articleResult) handleError(w http.ResponseWriter) bool {
+	return handleDownloadingError(w, r.err)
 }
 
 func downloadMarketing(ctx context.Context, c chan<- marketingResult) {
@@ -72,19 +72,19 @@ type marketingResult struct {
 	err       error
 }
 
-func (r *marketingResult) handle(w http.ResponseWriter) bool {
-	return checkForError(w, r.err)
+func (r *marketingResult) handleError(w http.ResponseWriter) bool {
+	return handleDownloadingError(w, r.err)
 }
 
-func checkForError(w http.ResponseWriter, err error) bool {
+func handleDownloadingError(w http.ResponseWriter, err error) bool {
 	if err == nil {
-		return true
+		return false
 	}
 
 	log.Printf("error downloading feed: %s", err)
 	w.WriteHeader(http.StatusInternalServerError)
 
-	return false
+	return true
 }
 
 func encodeToJSON(w http.ResponseWriter, feed news.Feed) {
