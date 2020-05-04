@@ -26,14 +26,11 @@ func newsFeed(w http.ResponseWriter, req *http.Request) {
 }
 
 func getNewsFeed(w http.ResponseWriter, req *http.Request) {
-	articleDowloader := downloader.NewArticleFeedReader()
-	marketingDownloader := downloader.NewMarketingFeedReader()
-
 	ca := make(chan articleResult)
 	cm := make(chan marketingResult)
 
-	go downloadArticles(req.Context(), ca, articleDowloader)
-	go downloadMarketing(req.Context(), cm, marketingDownloader)
+	go downloadArticles(req.Context(), ca)
+	go downloadMarketing(req.Context(), cm)
 
 	ar := <-ca
 	mr := <-cm
@@ -62,7 +59,9 @@ func getNewsFeed(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func downloadArticles(ctx context.Context, c chan<- articleResult, d news.ArticleFeedDownloader) {
+func downloadArticles(ctx context.Context, c chan<- articleResult) {
+	d := downloader.NewArticleFeedReader()
+
 	as, err := d.Download(ctx)
 	c <- articleResult{as, err}
 }
@@ -72,7 +71,9 @@ type articleResult struct {
 	err      error
 }
 
-func downloadMarketing(ctx context.Context, c chan<- marketingResult, d news.MarketingFeedDownloader) {
+func downloadMarketing(ctx context.Context, c chan<- marketingResult) {
+	d := downloader.NewMarketingFeedReader()
+
 	ms, err := d.Download(ctx)
 	c <- marketingResult{ms, err}
 }
