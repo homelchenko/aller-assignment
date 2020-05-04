@@ -9,3 +9,12 @@ linters-settings:
       - performance
       - experimental
       - opinionated
+    settings:
+      captLocal:
+        paramsOnly: false
+      truncateCmp:
+        skipArchDependent: false
+      underef:
+        skipRecvDeref: false
+      unnamedResult:
+        checkExported: true
