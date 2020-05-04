@@ -50,13 +50,8 @@ func getNewsFeed(w http.ResponseWriter, req *http.Request) {
 	}
 
 	feed := news.ProduceNewsFeed(ar.articles, mr.marketing)
-	enc := json.NewEncoder(w)
 
-	err := enc.Encode(feed)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+	encodeToJSON(w, feed)
 }
 
 func downloadArticles(ctx context.Context, c chan<- articleResult) {
@@ -81,4 +76,13 @@ func downloadMarketing(ctx context.Context, c chan<- marketingResult) {
 type marketingResult struct {
 	marketing []news.Marketing
 	err       error
+}
+
+func encodeToJSON(w http.ResponseWriter, feed news.Feed) {
+	enc := json.NewEncoder(w)
+
+	err := enc.Encode(feed)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
 }
