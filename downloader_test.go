@@ -29,7 +29,7 @@ func TestDownloadMarketingFeed(t *testing.T) {
 }
 
 func TestDownloadArticleFeed(t *testing.T) {
-	d := downloader.NewArticleFeedReader(context.Background())
+	d := downloader.NewArticleFeedReader()
 
 	feed, err := d.Download(context.Background())
 

@@ -13,7 +13,7 @@ const (
 type HTTPArticleFeedReader struct {
 }
 
-func NewArticleFeedReader(ctx context.Context) *HTTPArticleFeedReader {
+func NewArticleFeedReader() *HTTPArticleFeedReader {
 	return &HTTPArticleFeedReader{}
 }
 
