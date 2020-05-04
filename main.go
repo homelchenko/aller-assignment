@@ -22,6 +22,10 @@ func newsFeed(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	getNewsFeed(w, req)
+}
+
+func getNewsFeed(w http.ResponseWriter, req *http.Request) {
 	articleDowloader := downloader.NewArticleFeedReader()
 	marketingDownloader := downloader.NewMarketingFeedReader()
 
