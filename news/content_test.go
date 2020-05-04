@@ -13,3 +13,11 @@ func TestNewArticle(t *testing.T) {
 		t.Errorf("Got '%s', but expected 'Article'", a.Type)
 	}
 }
+
+func TestNewMarketing(t *testing.T) {
+	m := news.NewMarketing()
+
+	if m.Type != "ContentMarketing" {
+		t.Errorf("Got %s, but expected 'ContentMarketing'", m.Type)
+	}
+}
