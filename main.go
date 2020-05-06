@@ -56,7 +56,7 @@ type articleResult struct {
 	err      error
 }
 
-func (r *articleResult) handleError(w http.ResponseWriter) bool {
+func (r articleResult) handleError(w http.ResponseWriter) bool {
 	return handleDownloadingError(w, r.err)
 }
 
@@ -72,7 +72,7 @@ type marketingResult struct {
 	err       error
 }
 
-func (r *marketingResult) handleError(w http.ResponseWriter) bool {
+func (r marketingResult) handleError(w http.ResponseWriter) bool {
 	return handleDownloadingError(w, r.err)
 }
 
